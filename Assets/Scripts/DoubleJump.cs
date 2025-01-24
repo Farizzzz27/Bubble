@@ -6,24 +6,23 @@ public class DoubleJump : Movement
 
     protected override void Update()
     {
-        base.Update(); // Panggil logika movement dasar dari class Movement
+        base.Update();
 
-        // Cek kondisi untuk melakukan double jump
         if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && !isJumping && !canDoubleJump)
         {
             canDoubleJump = true;
             isJumping = true;
-            body.linearVelocity = new Vector2(body.linearVelocity.x, baseJumpForce); // Lakukan double jump
+            body.linearVelocity = new Vector2(body.linearVelocity.x, baseJumpForce);
         }
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        base.OnCollisionEnter2D(collision); // Panggil logika dasar dari class Movement
+        base.OnCollisionEnter2D(collision);
 
         if (isGrounded)
         {
-            canDoubleJump = false; // Reset kemampuan double jump saat menyentuh tanah
+            canDoubleJump = false;
         }
     }
 }
