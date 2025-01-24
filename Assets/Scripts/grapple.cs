@@ -3,60 +3,55 @@ using UnityEngine;
 
 public class Grapple : MonoBehaviour
 {
-    public GameObject target; // The target object (e.g., a hook or a point to grapple to)
-    public GameObject player; // The player object
-    public float grappleSpeed = 5f; // Speed of movement towards the target
-    private Rigidbody2D playerRigidbody; // Reference to the player's Rigidbody2D
+    public GameObject target;
+    public GameObject player;
+    public float grappleSpeed = 5f;
+    private Rigidbody2D playerRigidbody;
 
-    // Set gravity scale here or in the Inspector (if needed)
-    public float normalGravity = 1f; // The normal gravity scale for the player
-    public float grappleGravity = 0f; // The gravity scale while grappling
+    public float normalGravity = 1f;
+    public float grappleGravity = 0f;
+
+    private bool isGrappling = false;
 
     private void Start()
     {
-        // Get the Rigidbody2D component of the player
         playerRigidbody = player.GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if (!isGrappling) // Movement hanya berjalan jika tidak grappling
+        {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            playerRigidbody.linearVelocity = new Vector2(horizontalInput * 5f, playerRigidbody.linearVelocity.y);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        // Check if the object collided is tagged "Player"
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && Input.GetKey(KeyCode.E) && !isGrappling)
         {
-            // Wait for the player to press the "E" key
-            if (Input.GetKey(KeyCode.E))
-            {
-                // Start the grappling logic
-                StartCoroutine(Grappling());
-            }
+            StartCoroutine(Grappling());
         }
     }
 
     private IEnumerator Grappling()
     {
-        // Temporarily disable gravity during grappling
+        isGrappling = true;
         playerRigidbody.gravityScale = grappleGravity;
 
-        // Wait a moment before starting the movement
-        yield return new WaitForSeconds(0.2f);
-
-        // Move the player towards the target while it's farther than a certain distance (e.g., 0.1f)
-        while (Vector2.Distance(player.transform.position, target.transform.position) > 0.1f)
+        while (Vector2.Distance(playerRigidbody.position, target.transform.position) > 0.1f)
         {
-            // Move player closer to the target with the specified speed
-            player.transform.position = Vector2.MoveTowards(
-                player.transform.position, 
-                target.transform.position, 
-                grappleSpeed * Time.deltaTime
-            );
+            Vector2 direction = (target.transform.position - player.transform.position).normalized;
+            Vector2 grappleVelocity = direction * grappleSpeed;
+            playerRigidbody.linearVelocity = grappleVelocity;
 
-            yield return null; // Wait for the next frame
+            yield return null;
         }
 
-        // Once the player reaches the target, restore normal gravity
+        playerRigidbody.position = target.transform.position;
+        playerRigidbody.linearVelocity = Vector2.zero;
         playerRigidbody.gravityScale = normalGravity;
-
-        // Optionally, you can add a debug log or other actions here
-        Debug.Log("Grapple reached target and gravity restored!");
+        isGrappling = false;
     }
 }

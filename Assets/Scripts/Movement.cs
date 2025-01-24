@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -16,6 +17,11 @@ public class Movement : MonoBehaviour
     private bool canDoubleJump = false;
     private float jumpTime = 0f;
 
+    public float freezeDuration = 2f;
+    public float cooldown = 5f;
+    private float cooldownTimer = 0f;
+    private bool isFreezing = false;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -24,18 +30,15 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        // Horizontal Movement
         float horizontalInput = Input.GetAxis("Horizontal");
         body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
 
-        // Apply Gravity
         if (!isGrounded && !isJumping)
         {
             float newVerticalVelocity = body.linearVelocity.y + gravity * Time.deltaTime;
             body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(newVerticalVelocity, maxFallSpeed));
         }
 
-        // Jump Logic
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded)
@@ -56,6 +59,16 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space) || jumpTime >= maxJumpTime)
         {
             isJumping = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && cooldownTimer <= 0)
+        {
+            StartCoroutine(FreezeTime());
+        }
+
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime;
         }
     }
 
@@ -101,5 +114,20 @@ public class Movement : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         isGrounded = false;
+    }
+
+    private IEnumerator FreezeTime()
+    {
+        if (isFreezing) yield break;
+        isFreezing = true;
+        Debug.Log("TIme has stoped");
+
+        Time.timeScale = 0.1f;
+        cooldownTimer = cooldown;
+
+        yield return new WaitForSecondsRealtime(freezeDuration);
+
+        Time.timeScale = 1f;
+        isFreezing = false;
     }
 }

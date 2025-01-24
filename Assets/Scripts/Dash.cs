@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Dash : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class Dash : MonoBehaviour
         bool isMoving = Mathf.Abs(body.linearVelocity.x) > 0.01f;
 
         // Jika klik kanan ditekan, pemain bergerak, dan dash tersedia
-        if (Input.GetMouseButtonDown(1) && canDash && isMoving && !isDashing)
+        if (Input.GetKey(KeyCode.Q) && canDash && isMoving && !isDashing)
         {
             StartDash();
         }
