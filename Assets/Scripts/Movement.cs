@@ -37,13 +37,12 @@ public class Movement : MonoBehaviour
             isJumping = true;
             isGrounded = false;
             jumptime = 0f;
-            body.linearVelocity = new Vector2(body.linearVelocity.x, baseJumpForce); 
+            body.linearVelocity = new Vector2(body.linearVelocity.x, baseJumpForce);
         }
 
         if (Input.GetKey(KeyCode.Space) && isJumping)
         {
-            jumptime += Time.deltaTime; 
-
+            jumptime += Time.deltaTime;
             if (jumptime < maxJumpTime)
             {
                 float extraJumpForce = Mathf.Lerp(baseJumpForce, maxJumpForce, jumptime / maxJumpTime);
@@ -63,18 +62,15 @@ public class Movement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.contacts[0].normal.y > 0.5f)  
+        if (collision.contacts[0].normal.y > 0.5f)
         {
-            isGrounded = true; 
+            isGrounded = true;
             isJumping = false;
-            Debug.Log("Player is grounded");
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        isGrounded = false;  
-        Debug.Log("Player is in the air");
+        isGrounded = false;
     }
 }
-    
