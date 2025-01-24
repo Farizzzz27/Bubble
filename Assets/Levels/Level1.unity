@@ -358,6 +358,7 @@ GameObject:
   - component: {fileID: 1484614945}
   - component: {fileID: 1484614944}
   - component: {fileID: 1484614943}
+  - component: {fileID: 1484614948}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -523,7 +524,27 @@ MonoBehaviour:
   speed: 5
   gravity: -15
   maxFallSpeed: -20
-  jumpForce: 10
+  baseJumpForce: 5
+  maxJumpForce: 8
+  maxJumpTime: 0.5
+--- !u!114 &1484614948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484614942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02138ef2a104b7b42a7c950d60e7a065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  gravity: -15
+  maxFallSpeed: -20
+  baseJumpForce: 5
+  maxJumpForce: 8
+  maxJumpTime: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

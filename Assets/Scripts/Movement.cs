@@ -1,8 +1,8 @@
 using UnityEngine;
 
 public class Movement : MonoBehaviour
-{   
-    private Rigidbody2D body;
+{
+    protected Rigidbody2D body; // Diubah ke protected
 
     public float speed = 5f;
     public float gravity = -15f;
@@ -11,17 +11,17 @@ public class Movement : MonoBehaviour
     public float maxJumpForce = 8f;
     public float maxJumpTime = 0.5f;
 
-    private bool isGrounded = false;
-    private bool isJumping = false;
-    private float jumptime = 0f;
+    protected bool isGrounded = false;
+    protected bool isJumping = false;
+    protected float jumptime = 0f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         body.gravityScale = 0;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
@@ -60,7 +60,7 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.contacts[0].normal.y > 0.5f)
         {
@@ -69,7 +69,7 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    protected virtual void OnCollisionExit2D(Collision2D collision)
     {
         isGrounded = false;
     }
