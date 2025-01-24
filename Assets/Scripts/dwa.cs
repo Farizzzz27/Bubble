@@ -1,55 +1,79 @@
 using UnityEngine;
 
-public class ResponsiveGravity : MonoBehaviour
+public class VariableJump : MonoBehaviour
 {
     private Rigidbody2D body;
 
-    public float gravity = -15f;       // Custom gravity force (negative for downward)
-    public float maxFallSpeed = -20f; // Maximum falling speed
-    public float jumpForce = 10f;     // Initial jump force
-    public float moveSpeed = 5f;      // Horizontal movement speed
+    public float moveSpeed = 5f;         // Kecepatan gerak horizontal
+    public float jumpForce = 10f;       // Gaya awal lompatan
+    public float maxJumpTime = 1f;      // Durasi maksimum pemain bisa menekan tombol lompat
+    public float gravity = -15f;        // Gaya gravitasi kustom
+    public float maxFallSpeed = -20f;   // Kecepatan jatuh maksimum
 
-    private bool isGrounded = false;  // Check if character is on the ground
+    private bool isGrounded = false;    // Apakah karakter sedang menyentuh tanah
+    private bool isJumping = false;     // Apakah karakter sedang melompat
+    private float jumpTime = 0f;        // Waktu yang telah digunakan untuk melompat
 
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        body.gravityScale = 0; // Disable default Unity gravity
+        body.gravityScale = 0; // Nonaktifkan gravitasi bawaan Unity
     }
 
     private void Update()
     {
-        // Horizontal Movement
+        // Gerakan horizontal
         float horizontalInput = Input.GetAxis("Horizontal");
         body.linearVelocity = new Vector2(horizontalInput * moveSpeed, body.linearVelocity.y);
 
-        // Custom Gravity
-        if (!isGrounded) // Apply gravity if not grounded
+        // Custom gravity ketika di udara
+        if (!isGrounded && !isJumping)
         {
             float newVerticalVelocity = body.linearVelocity.y + gravity * Time.deltaTime;
             body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(newVerticalVelocity, maxFallSpeed));
         }
 
-        // Jump Input
+        // Mulai lompat
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
+            isJumping = true;
+            isGrounded = false;
+            jumpTime = 0f; // Reset timer lompatan
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
-            isGrounded = false; // Leave the ground
+        }
+
+        // Lanjutkan lompat selama tombol Space ditekan
+        if (Input.GetKey(KeyCode.Space) && isJumping)
+        {
+            jumpTime += Time.deltaTime;
+
+            // Tambahkan gaya ke atas selama durasi tombol ditekan
+            if (jumpTime < maxJumpTime)
+            {
+                body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+            }
+        }
+
+        // Hentikan lompat jika Space dilepas atau mencapai durasi maksimum
+        if (Input.GetKeyUp(KeyCode.Space) || jumpTime >= maxJumpTime)
+        {
+            isJumping = false;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Simple Ground Check
-        if (collision.contacts[0].normal.y > 0.5f) // Checks if collision is from below
+        // Cek apakah menyentuh tanah
+        if (collision.contacts[0].normal.y > 0.5f)
         {
-            isGrounded = true;
+            isGrounded = true;  // Karakter menyentuh tanah
+            isJumping = false;  // Reset status lompatan
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // Leaves ground
+        // Tidak lagi menyentuh tanah
         isGrounded = false;
     }
 }
