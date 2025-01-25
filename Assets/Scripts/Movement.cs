@@ -5,7 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     private Rigidbody2D body;
-    private Animator animator; // Tambahkan Animator
+    private Animator animator;
 
     public float speed = 5f;
     public float gravity = -25f;
@@ -29,15 +29,15 @@ public class Movement : MonoBehaviour
 
     public float freezeDuration = 2f;
     private bool isFreezing = false;
-    [SerializeField] private string enemyTag = "Enemy"; 
-    [SerializeField] private float range = 8f;        
+    [SerializeField] private string enemyTag = "Enemy";
+    [SerializeField] private float range = 8f;
 
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         body.gravityScale = 0;
         movementScript = GetComponent<Movement>();
-        animator = GetComponent<Animator>(); 
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -107,6 +107,23 @@ public class Movement : MonoBehaviour
         {
             AttemptTeleport();
         }
+
+        // Update animasi lompat dan jatuh
+        if (body.linearVelocity.y > 0.1f && !isGrounded)
+        {
+            animator.SetBool("Jump", true);
+            animator.SetBool("Fall", false);
+        }
+        else if (body.linearVelocity.y < -0.1f && !isGrounded)
+        {
+            animator.SetBool("Jump", false);
+            animator.SetBool("Fall", true);
+        }
+        else if (isGrounded)
+        {
+            animator.SetBool("Jump", false);
+            animator.SetBool("Fall", false);
+        }
     }
 
     private void StartJump()
@@ -144,6 +161,7 @@ public class Movement : MonoBehaviour
         canDash = false;
         dashTimeLeft = dashDuration;
         body.gravityScale = 0;
+        animator.SetTrigger("Dash");
         movementScript.enabled = false;
         Invoke(nameof(EndDash), dashDuration);
         Invoke(nameof(ResetDash), dashCooldown);
@@ -174,10 +192,8 @@ public class Movement : MonoBehaviour
 
     private void AttemptTeleport()
     {
-        // Cari semua musuh dalam radius tertentu
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range);
 
-        // Temukan musuh terdekat
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
 
@@ -207,9 +223,7 @@ public class Movement : MonoBehaviour
     private void TeleportToTarget(Transform target)
     {
         transform.position = target.position;
-
         Destroy(target.gameObject);
-
         Debug.Log("Teleported to enemy and destroyed it!");
     }
 
@@ -240,7 +254,7 @@ public class Movement : MonoBehaviour
         isFreezing = true;
         Debug.Log("Time has stopped");
 
-        Time.timeScale = 0.1f;  
+        Time.timeScale = 0.1f;
 
         yield return new WaitForSecondsRealtime(freezeDuration);
 
