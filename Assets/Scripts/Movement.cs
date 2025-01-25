@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Security.Cryptography;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -23,10 +25,10 @@ public class Movement : MonoBehaviour
     private float dashTimeLeft;
     [SerializeField] private float dashSpeed = 15f;
     [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private float dashCooldown = 5f;
 
     public float freezeDuration = 2f;
-    public float cooldown = 5f;
+    public float cooldown = 0f;
     private float cooldownTimer = 0f;
     private bool isFreezing = false;
 
@@ -85,6 +87,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && cooldownTimer <= 0)
         {
             StartCoroutine(FreezeTime());
+            
         }
 
         if (cooldownTimer > 0)
@@ -148,6 +151,10 @@ public class Movement : MonoBehaviour
         movementScript.enabled = true;
         body.linearVelocity = Vector2.zero;
     }  
+    private void ResetDash()
+    {
+        canDash = true;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.contacts[0].normal.y > 0.5f)
@@ -156,10 +163,6 @@ public class Movement : MonoBehaviour
             isJumping = false;
             canDoubleJump = false;
         }
-    }
-    private void ResetDash()
-    {
-        canDash = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -180,5 +183,10 @@ public class Movement : MonoBehaviour
 
         Time.timeScale = 1f;
         isFreezing = false;
+
+        canDoubleJump = false;
+        canDash = false;
+        
+        Debug.Log("Reset abilty");
     }
 }
