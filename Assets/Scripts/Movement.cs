@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
 
     public float speed = 5f;
     public float gravity = -25f;
-    public float maxFallSpeed = -20f;
+    public float maxFallSpeed = -5f;
     public float baseJumpForce = 5f;
     public float maxJumpForce = 8f;
     public float maxJumpTime = 0.2f;
