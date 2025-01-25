@@ -3,7 +3,7 @@ using UnityEngine;
 public class SwordInteraction : MonoBehaviour
 {
     public Animator playerAnimator; // Animator untuk pemain
-    public string pickUpSwordAnimation = "PickUpSword"; // Nama trigger animasi
+    public string pickUpSwordAnimation = "Interact"; // Nama trigger animasi
     public KeyCode interactionKey = KeyCode.J; // Tombol interaksi yang diubah ke J
     private bool isNearSword = false; // Status pemain dekat dengan pedang
     private GameObject currentSword; // Pedang yang sedang berinteraksi
