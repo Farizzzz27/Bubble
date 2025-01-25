@@ -8,11 +8,11 @@ public class Movement : MonoBehaviour
     private Animator animator; // Tambahkan Animator
 
     public float speed = 5f;
-    public float gravity = -15f;
+    public float gravity = -25f;
     public float maxFallSpeed = -20f;
     public float baseJumpForce = 5f;
     public float maxJumpForce = 8f;
-    public float maxJumpTime = 0.5f;
+    public float maxJumpTime = 0.2f;
 
     private bool isGrounded = false;
     private bool isJumping = false;
@@ -25,12 +25,12 @@ public class Movement : MonoBehaviour
     private float dashTimeLeft;
     [SerializeField] private float dashSpeed = 15f;
     [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private float dashCooldown = 5f;
+    [SerializeField] private float dashCooldown = 3f;
 
     public float freezeDuration = 2f;
     private bool isFreezing = false;
     [SerializeField] private string enemyTag = "Enemy"; // Tag untuk mengenali musuh
-    [SerializeField] private float range = 5f;         // Jarak maksimal teleport
+    [SerializeField] private float range = 8f;         // Jarak maksimal teleport
 
     private void Awake()
     {
@@ -53,11 +53,11 @@ public class Movement : MonoBehaviour
         // Mengubah arah tampilan player
         if (horizontalInput > 0) // Bergerak ke kanan
         {
-            transform.localScale = new Vector3(7f, 7f, 7f); // Menghadap kanan
+            transform.localScale = new Vector3(5f, 5f, 5f); // Menghadap kanan
         }
         else if (horizontalInput < 0) // Bergerak ke kiri
         {
-            transform.localScale = new Vector3(-7f, 7f, 7f); // Menghadap kiri
+            transform.localScale = new Vector3(-5f, 5f, 5f); // Menghadap kiri
         }
 
         if (Input.GetKey(KeyCode.Q) && canDash && isMoving && !isDashing)
