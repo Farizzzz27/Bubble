@@ -185,7 +185,7 @@ public class Movement : MonoBehaviour
         isFreezing = false;
 
         canDoubleJump = false;
-        canDash = false;
+        canDash = true;
         
         Debug.Log("Reset abilty");
     }
