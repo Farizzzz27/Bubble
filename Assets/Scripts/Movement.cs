@@ -29,8 +29,13 @@ public class Movement : MonoBehaviour
 
     public float freezeDuration = 2f;
     public float cooldown = 0f;
-    private float cooldownTimer = 0f;
+    private float cooldownTimer = 0.1f;
     private bool isFreezing = false;
+
+    [SerializeField] private string enemyTag = "Enemy"; 
+    [SerializeField] private float range = 5f;         
+    [SerializeField] private float cooldownTP = 3f;     
+
 
     private void Awake()
     {
@@ -93,6 +98,11 @@ public class Movement : MonoBehaviour
         if (cooldownTimer > 0)
         {
             cooldownTimer -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && cooldownTimer <= 0)
+        {
+            AttemptTeleport();
         }
     }
 
@@ -188,5 +198,49 @@ public class Movement : MonoBehaviour
         canDash = true;
         
         Debug.Log("Reset abilty");
+    }
+    private void AttemptTeleport()
+    {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range);
+
+        Transform closestEnemy = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (Collider2D enemy in enemies)
+        {
+            if (enemy.CompareTag(enemyTag))
+            {
+                float distance = Vector2.Distance(transform.position, enemy.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = enemy.transform;
+                }
+            }
+        }
+
+        if (closestEnemy != null)
+        {
+            TeleportToTarget(closestEnemy);
+        }
+        else
+        {
+            Debug.Log("No enemies in range!");
+        }
+    }
+    private void TeleportToTarget(Transform target)
+    {
+        transform.position = target.position;
+
+        Destroy(target.gameObject);
+
+        cooldownTimer = cooldown;
+
+        Debug.Log("Teleported to enemy and destroyed it!");
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 }
