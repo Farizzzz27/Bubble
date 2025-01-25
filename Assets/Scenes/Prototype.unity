@@ -655,7 +655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashSpeed: 10
   dashDuration: 0.2
-  dashCooldown: 0
+  dashCooldown: 1
 --- !u!114 &1253853694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,12 +668,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62aea2a2cec060b478836354d1c43bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 1419811751}
   groundRayLength: 0.1
   wallRayLength: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
+  groundRayOffset: {x: 0, y: 0}
+  wallRayOffset: {x: 0, y: 0}
+  isGrounded: 0
+  isTouchingWall: 0
 --- !u!1 &1326843922
 GameObject:
   m_ObjectHideFlags: 0
