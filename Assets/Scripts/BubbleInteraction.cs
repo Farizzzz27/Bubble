@@ -2,11 +2,22 @@ using UnityEngine;
 
 public class BubbleInteraction : MonoBehaviour
 {
-    public Animator playerAnimator; // Animator untuk pemain
-    public string breakBubbleAnimation = "Cut"; // Nama trigger animasi
-    public KeyCode interactionKey = KeyCode.K; // Tombol interaksi
-    private bool isNearBubble = false; // Status pemain dekat dengan gelembung
-    private GameObject currentBubble; // Gelembung yang sedang berinteraksi
+    public Animator playerAnimator;
+    public string breakBubbleAnimation = "Cut";
+    public KeyCode interactionKey = KeyCode.K;
+    public Cutscene cutsceneManager;
+    public StoryScene[] bubbleDialogs;
+    private int currentBubbleIndex = 0;
+
+    private bool isNearBubble = false;
+    private GameObject currentBubble;
+    private Movement playerMovement; // Tambahkan referensi Movement
+
+    private void Start()
+    {
+        // Mendapatkan referensi ke komponen Movement
+        playerMovement = GetComponent<Movement>();
+    }
 
     private void Update()
     {
@@ -20,14 +31,20 @@ public class BubbleInteraction : MonoBehaviour
     {
         if (playerAnimator != null && currentBubble != null)
         {
-            // Jalankan animasi memecahkan gelembung
+            playerMovement.enabled = false; // Menonaktifkan movement saat dialog dimulai
             playerAnimator.SetTrigger(breakBubbleAnimation);
-
-            // Opsional: Memastikan NPC dilepaskan
             ReleaseNPC(currentBubble);
-
-            // Hancurkan gelembung setelah animasi
             Destroy(currentBubble);
+
+            if (cutsceneManager != null && currentBubbleIndex < bubbleDialogs.Length)
+            {
+                cutsceneManager.StartDialog(bubbleDialogs[currentBubbleIndex], () =>
+                {
+                    // Mengaktifkan kembali movement setelah dialog selesai
+                    playerMovement.enabled = true;
+                });
+                currentBubbleIndex++;
+            }
         }
     }
 
@@ -36,8 +53,8 @@ public class BubbleInteraction : MonoBehaviour
         Transform npc = bubble.transform.Find("NPC");
         if (npc != null)
         {
-            npc.SetParent(null); // Lepaskan NPC dari gelembung
-            npc.gameObject.SetActive(true); // Aktifkan NPC jika sebelumnya tidak aktif
+            npc.SetParent(null);
+            npc.gameObject.SetActive(true);
         }
     }
 

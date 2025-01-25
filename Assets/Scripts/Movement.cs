@@ -32,6 +32,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private string enemyTag = "Enemy";
     [SerializeField] private float range = 8f;
 
+    private bool canMove = true;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -42,6 +44,8 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
+        if (!canMove) return;
+
         float horizontalInput = Input.GetAxis("Horizontal");
         body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
 
@@ -123,6 +127,13 @@ public class Movement : MonoBehaviour
         {
             animator.SetBool("Jump", false);
             animator.SetBool("Fall", false);
+        }
+
+        if (!canMove)
+        {
+            body.linearVelocity = Vector2.zero; // Hentikan gerakan
+            animator.SetBool("Run", false); // Nonaktifkan animasi lari
+            return;
         }
     }
 
@@ -265,5 +276,16 @@ public class Movement : MonoBehaviour
         canDash = true;
 
         Debug.Log("Reset ability");
+    }
+
+    public void DisableMovement()
+    {
+        canMove = false;
+    }
+
+    // Fungsi untuk mengaktifkan kembali pergerakan
+    public void EnableMovement()
+    {
+        canMove = true;
     }
 }
