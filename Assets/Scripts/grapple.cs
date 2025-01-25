@@ -7,14 +7,15 @@ public class Grapple : MonoBehaviour
     public GameObject player;
     public float grappleSpeed = 5f;
     private Rigidbody2D playerRigidbody;
-    private Movement movementScript; // Referensi ke script Movement
+
+    public float normalGravity = 1f;
+    public float grappleGravity = 0f;
 
     private bool isGrappling = false;
 
     private void Start()
     {
         playerRigidbody = player.GetComponent<Rigidbody2D>();
-        movementScript = player.GetComponent<Movement>(); // Mengambil referensi script Movement
     }
 
     private void Update()
@@ -37,10 +38,7 @@ public class Grapple : MonoBehaviour
     private IEnumerator Grappling()
     {
         isGrappling = true;
-
-        // Nonaktifkan Movement script dan set gravitasi ke 0 saat grappling
-        movementScript.enabled = false;
-        playerRigidbody.gravityScale = 0f;
+        playerRigidbody.gravityScale = grappleGravity;
 
         while (Vector2.Distance(playerRigidbody.position, target.transform.position) > 0.1f)
         {
@@ -51,13 +49,9 @@ public class Grapple : MonoBehaviour
             yield return null;
         }
 
-        // Setelah mencapai target, atur posisi pemain dan kembalikan kondisi semula
         playerRigidbody.position = target.transform.position;
         playerRigidbody.linearVelocity = Vector2.zero;
-
-        // Kembalikan Movement script dan gravitasi
-        movementScript.enabled = true;
-        playerRigidbody.gravityScale = 1f; // Kembalikan gravitasi ke normal
+        playerRigidbody.gravityScale = normalGravity;
         isGrappling = false;
     }
 }

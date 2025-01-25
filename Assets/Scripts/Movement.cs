@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -27,9 +28,9 @@ public class Movement : MonoBehaviour
     [SerializeField] private float dashCooldown = 5f;
 
     public float freezeDuration = 2f;
-    public float cooldown = 0f;
-    private float cooldownTimer = 0f;
     private bool isFreezing = false;
+    [SerializeField] private string enemyTag = "Enemy"; // Tag untuk mengenali musuh
+    [SerializeField] private float range = 5f;         // Jarak maksimal teleport
 
     private void Awake()
     {
@@ -97,14 +98,14 @@ public class Movement : MonoBehaviour
             isJumping = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && cooldownTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.F))
         {
             StartCoroutine(FreezeTime());
         }
 
-        if (cooldownTimer > 0)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            cooldownTimer -= Time.deltaTime;
+            AttemptTeleport();
         }
     }
 
@@ -171,6 +172,53 @@ public class Movement : MonoBehaviour
         canDash = true;
     }
 
+    private void AttemptTeleport()
+    {
+        // Cari semua musuh dalam radius tertentu
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range);
+
+        // Temukan musuh terdekat
+        Transform closestEnemy = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (Collider2D enemy in enemies)
+        {
+            if (enemy.CompareTag(enemyTag))
+            {
+                float distance = Vector2.Distance(transform.position, enemy.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = enemy.transform;
+                }
+            }
+        }
+
+        if (closestEnemy != null)
+        {
+            TeleportToTarget(closestEnemy);
+        }
+        else
+        {
+            Debug.Log("No enemies in range!");
+        }
+    }
+
+    private void TeleportToTarget(Transform target)
+    {
+        transform.position = target.position;
+
+        Destroy(target.gameObject);
+
+        Debug.Log("Teleported to enemy and destroyed it!");
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.contacts[0].normal.y > 0.5f)
@@ -192,8 +240,7 @@ public class Movement : MonoBehaviour
         isFreezing = true;
         Debug.Log("Time has stopped");
 
-        Time.timeScale = 0.1f;
-        cooldownTimer = cooldown;
+        Time.timeScale = 0.1f;  
 
         yield return new WaitForSecondsRealtime(freezeDuration);
 
