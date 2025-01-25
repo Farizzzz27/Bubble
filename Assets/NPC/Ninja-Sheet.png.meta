@@ -272,7 +272,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Ninja-Sheet_0: 6109812040712548797
+      Ninja-Sheet_1: -8877896352865431596
+      Ninja-Sheet_2: 3465141803956539686
+      Ninja-Sheet_3: 5944924397593063736
+      Ninja-Sheet_4: -4112314269404715856
+      Ninja-Sheet_5: -7065624779357885219
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

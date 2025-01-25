@@ -272,7 +272,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Pesilatsifu-Sheet_0: 356914184246221797
+      Pesilatsifu-Sheet_1: -1767074077937409446
+      Pesilatsifu-Sheet_2: 1813617432535585974
+      Pesilatsifu-Sheet_3: 6764876666918456080
+      Pesilatsifu-Sheet_4: 6225258118467272574
+      Pesilatsifu-Sheet_5: 4057452745941338207
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
