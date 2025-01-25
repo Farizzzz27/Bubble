@@ -272,7 +272,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dukun-Sheet_0: 6079650348702947057
+      Dukun-Sheet_1: 7457619315503611654
+      Dukun-Sheet_2: 965300105576288725
+      Dukun-Sheet_3: -4371756256408016154
+      Dukun-Sheet_4: 1175282876629495307
+      Dukun-Sheet_5: 426818786203386197
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

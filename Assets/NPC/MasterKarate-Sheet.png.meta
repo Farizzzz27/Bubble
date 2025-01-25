@@ -272,7 +272,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      MasterKarate-Sheet_0: -5381501258682096432
+      MasterKarate-Sheet_1: 6596009010782715205
+      MasterKarate-Sheet_2: 642098789792115103
+      MasterKarate-Sheet_3: -4370890183627962139
+      MasterKarate-Sheet_4: -8605658387150317324
+      MasterKarate-Sheet_5: -1714571811038153775
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
