@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Security.Cryptography;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -17,8 +19,16 @@ public class Movement : MonoBehaviour
     private bool canDoubleJump = false;
     private float jumpTime = 0f;
 
+    private Movement movementScript;
+    private bool isDashing = false;
+    private bool canDash = true;
+    private float dashTimeLeft;
+    [SerializeField] private float dashSpeed = 15f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 5f;
+
     public float freezeDuration = 2f;
-    public float cooldown = 5f;
+    public float cooldown = 0f;
     private float cooldownTimer = 0f;
     private bool isFreezing = false;
 
@@ -26,12 +36,25 @@ public class Movement : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         body.gravityScale = 0;
+        movementScript = GetComponent<Movement>();
     }
 
     private void Update()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
+
+        bool isMoving = Mathf.Abs(body.linearVelocity.x) > 0.01f;
+
+        if (Input.GetKey(KeyCode.Q) && canDash && isMoving && !isDashing)
+        {
+            StartDash();
+        }
+
+        if (isDashing)
+        {
+            DashMovement();
+        }
 
         if (!isGrounded && !isJumping)
         {
@@ -64,6 +87,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && cooldownTimer <= 0)
         {
             StartCoroutine(FreezeTime());
+            
         }
 
         if (cooldownTimer > 0)
@@ -101,6 +125,36 @@ public class Movement : MonoBehaviour
         body.linearVelocity = new Vector2(body.linearVelocity.x, baseJumpForce);
     }
 
+    private void StartDash()
+    {
+        isDashing = true;
+        canDash = false;
+        dashTimeLeft = dashDuration;
+        body.gravityScale = 0;
+        movementScript.enabled = false;
+        Invoke(nameof(EndDash), dashDuration);
+        Invoke(nameof(ResetDash), dashCooldown);
+    }
+    private void DashMovement()
+    {
+        if (dashTimeLeft > 0)
+        {
+            float dashDirection = Mathf.Sign(body.linearVelocity.x);
+            body.linearVelocity = new Vector2(dashDirection * dashSpeed, 0);
+            dashTimeLeft -= Time.deltaTime;
+        }
+    }
+    private void EndDash()
+    {
+        isDashing = false;
+        body.gravityScale = movementScript.gravity / Physics2D.gravity.y;
+        movementScript.enabled = true;
+        body.linearVelocity = Vector2.zero;
+    }  
+    private void ResetDash()
+    {
+        canDash = true;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.contacts[0].normal.y > 0.5f)
@@ -129,5 +183,10 @@ public class Movement : MonoBehaviour
 
         Time.timeScale = 1f;
         isFreezing = false;
+
+        canDoubleJump = false;
+        canDash = true;
+        
+        Debug.Log("Reset abilty");
     }
 }

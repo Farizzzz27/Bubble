@@ -497,7 +497,22 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Interact-Sheet_0: -3087147038075604974
+      Interact-Sheet_1: -1470381907115856119
+      Interact-Sheet_10: -7312949606547212983
+      Interact-Sheet_11: -7490776018815167008
+      Interact-Sheet_12: -7784341548552728970
+      Interact-Sheet_13: -501081605826792250
+      Interact-Sheet_14: 2383007311235029599
+      Interact-Sheet_2: -1761498193711098000
+      Interact-Sheet_3: 7222320795603506673
+      Interact-Sheet_4: -1145009171453371209
+      Interact-Sheet_5: 3259320543526290413
+      Interact-Sheet_6: -4171581240247255621
+      Interact-Sheet_7: -992972501719949723
+      Interact-Sheet_8: -1183473763512926845
+      Interact-Sheet_9: -5100814351343666845
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
