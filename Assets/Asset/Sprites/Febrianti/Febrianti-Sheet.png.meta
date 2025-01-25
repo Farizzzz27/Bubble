@@ -272,7 +272,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Febrianti-Sheet_0: 6297017025225397174
+      Febrianti-Sheet_1: 7730461565413542622
+      Febrianti-Sheet_2: -6532710937254448387
+      Febrianti-Sheet_3: -532561643362224328
+      Febrianti-Sheet_4: 7018646130536498282
+      Febrianti-Sheet_5: 4223024090217412532
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

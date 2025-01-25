@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Security.Cryptography;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
     private Rigidbody2D body;
+    private Animator animator; // Tambahkan Animator
 
     public float speed = 5f;
     public float gravity = -15f;
@@ -29,19 +28,15 @@ public class Movement : MonoBehaviour
 
     public float freezeDuration = 2f;
     public float cooldown = 0f;
-    private float cooldownTimer = 0.1f;
+    private float cooldownTimer = 0f;
     private bool isFreezing = false;
-
-    [SerializeField] private string enemyTag = "Enemy"; 
-    [SerializeField] private float range = 5f;         
-    [SerializeField] private float cooldownTP = 3f;     
-
 
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         body.gravityScale = 0;
         movementScript = GetComponent<Movement>();
+        animator = GetComponent<Animator>(); // Inisialisasi Animator
     }
 
     private void Update()
@@ -50,6 +45,19 @@ public class Movement : MonoBehaviour
         body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
 
         bool isMoving = Mathf.Abs(body.linearVelocity.x) > 0.01f;
+
+        // Set parameter isRunning untuk animasi
+        animator.SetBool("Run", isMoving);
+
+        // Mengubah arah tampilan player
+        if (horizontalInput > 0) // Bergerak ke kanan
+        {
+            transform.localScale = new Vector3(7f, 7f, 7f); // Menghadap kanan
+        }
+        else if (horizontalInput < 0) // Bergerak ke kiri
+        {
+            transform.localScale = new Vector3(-7f, 7f, 7f); // Menghadap kiri
+        }
 
         if (Input.GetKey(KeyCode.Q) && canDash && isMoving && !isDashing)
         {
@@ -92,17 +100,11 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && cooldownTimer <= 0)
         {
             StartCoroutine(FreezeTime());
-            
         }
 
         if (cooldownTimer > 0)
         {
             cooldownTimer -= Time.deltaTime;
-        }
-
-        if (Input.GetKeyDown(KeyCode.E) && cooldownTimer <= 0)
-        {
-            AttemptTeleport();
         }
     }
 
@@ -145,6 +147,7 @@ public class Movement : MonoBehaviour
         Invoke(nameof(EndDash), dashDuration);
         Invoke(nameof(ResetDash), dashCooldown);
     }
+
     private void DashMovement()
     {
         if (dashTimeLeft > 0)
@@ -154,17 +157,20 @@ public class Movement : MonoBehaviour
             dashTimeLeft -= Time.deltaTime;
         }
     }
+
     private void EndDash()
     {
         isDashing = false;
         body.gravityScale = movementScript.gravity / Physics2D.gravity.y;
         movementScript.enabled = true;
         body.linearVelocity = Vector2.zero;
-    }  
+    }
+
     private void ResetDash()
     {
         canDash = true;
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.contacts[0].normal.y > 0.5f)
@@ -184,7 +190,7 @@ public class Movement : MonoBehaviour
     {
         if (isFreezing) yield break;
         isFreezing = true;
-        Debug.Log("TIme has stoped");
+        Debug.Log("Time has stopped");
 
         Time.timeScale = 0.1f;
         cooldownTimer = cooldown;
@@ -196,51 +202,7 @@ public class Movement : MonoBehaviour
 
         canDoubleJump = false;
         canDash = true;
-        
-        Debug.Log("Reset abilty");
-    }
-    private void AttemptTeleport()
-    {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range);
 
-        Transform closestEnemy = null;
-        float closestDistance = Mathf.Infinity;
-
-        foreach (Collider2D enemy in enemies)
-        {
-            if (enemy.CompareTag(enemyTag))
-            {
-                float distance = Vector2.Distance(transform.position, enemy.transform.position);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestEnemy = enemy.transform;
-                }
-            }
-        }
-
-        if (closestEnemy != null)
-        {
-            TeleportToTarget(closestEnemy);
-        }
-        else
-        {
-            Debug.Log("No enemies in range!");
-        }
-    }
-    private void TeleportToTarget(Transform target)
-    {
-        transform.position = target.position;
-
-        Destroy(target.gameObject);
-
-        cooldownTimer = cooldown;
-
-        Debug.Log("Teleported to enemy and destroyed it!");
-    }
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, range);
+        Debug.Log("Reset ability");
     }
 }
