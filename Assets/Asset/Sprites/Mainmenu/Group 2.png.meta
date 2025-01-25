@@ -222,7 +222,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      NPC-Sheet_0: 231258087739330843
+      NPC-Sheet_1: 8557408687690543684
+      NPC-Sheet_2: -423336002938184931
+      NPC-Sheet_3: 1704821520801174999
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

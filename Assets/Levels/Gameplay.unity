@@ -68326,11 +68326,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  gravity: -15
+  gravity: -25
   maxFallSpeed: -20
   baseJumpForce: 5
   maxJumpForce: 8
-  maxJumpTime: 0.5
+  maxJumpTime: 0.3
   dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 5
