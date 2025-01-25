@@ -1,42 +1,57 @@
 using UnityEngine;
 
-public class InteractToDestroy : MonoBehaviour
+public class SwordInteraction : MonoBehaviour
 {
-    private bool isPlayerInRange = false;  // Menyimpan status apakah pemain berada dalam jangkauan collider
-    public Animator animator;              // Reference ke Animator untuk animasi interaksi
-    public string interactAnimationTrigger = "Interact"; // Nama trigger untuk animasi interaksi
+    public Animator playerAnimator; // Animator untuk pemain
+    public string pickUpSwordAnimation = "PickUpSword"; // Nama trigger animasi
+    public KeyCode interactionKey = KeyCode.J; // Tombol interaksi yang diubah ke J
+    private bool isNearSword = false; // Status pemain dekat dengan pedang
+    private GameObject currentSword; // Pedang yang sedang berinteraksi
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void Update()
     {
-        // Memeriksa jika yang masuk collider adalah pemain
-        if (other.CompareTag("Player"))
+        if (isNearSword && Input.GetKeyDown(interactionKey))
         {
-            isPlayerInRange = true;
+            InteractWithSword();
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void InteractWithSword()
     {
-        // Menandai pemain keluar dari collider
-        if (other.CompareTag("Player"))
+        if (playerAnimator != null && currentSword != null)
         {
-            isPlayerInRange = false;
+            // Pastikan animasi mengambil pedang yang benar dipicu
+            playerAnimator.SetTrigger(pickUpSwordAnimation);
+
+            // Opsional: Memberikan pedang ke pemain (misalnya menonaktifkan objek pedang)
+            PickUpSword(currentSword);
+
+            // Hancurkan pedang setelah animasi selesai
+            Destroy(currentSword);
         }
     }
 
-    void Update()
+    private void PickUpSword(GameObject sword)
     {
-        // Memeriksa jika pemain menekan tombol 'J' dan berada dalam jangkauan collider
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.J))
-        {
-            // Memicu animasi interaksi
-            if (animator != null)
-            {
-                animator.SetTrigger(interactAnimationTrigger);
-            }
+        // Menonaktifkan pedang dari scene setelah diambil
+        sword.SetActive(false); // Menonaktifkan pedang setelah diambil
+    }
 
-            // Menghancurkan objek setelah animasi selesai (tunggu beberapa detik jika animasi perlu waktu)
-            Destroy(gameObject, 1f);  // Waktu tunggu sesuai durasi animasi
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Sword"))
+        {
+            isNearSword = true;
+            currentSword = collision.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Sword"))
+        {
+            isNearSword = false;
+            currentSword = null;
         }
     }
 }
