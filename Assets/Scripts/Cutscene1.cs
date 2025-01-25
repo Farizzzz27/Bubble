@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // Tambahkan ini untuk mengatur scene
 
 public class Cutscene1 : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class Cutscene1 : MonoBehaviour
 
     [Header("Settings")]
     public float typingSpeed = 0.05f; // Kecepatan teks muncul
+    public float delayBeforeLoadingScene = 1f; // Waktu tunggu sebelum load scene gameplay
+    public string gameplaySceneName = "Gameplay"; // Nama scene gameplay
     public Color inactiveMainColor = new Color(0.54f, 0.54f, 0.54f); // Warna saat karakter utama tidak berbicara (8A8A8A)
 
     private Coroutine currentCoroutine;
@@ -85,6 +88,10 @@ public class Cutscene1 : MonoBehaviour
         // Menyelesaikan dialog, menyembunyikan semua UI
         HideAllUI();
         isDialogActive = false;
+
+        // Tunggu 1 detik sebelum load scene gameplay
+        yield return new WaitForSeconds(delayBeforeLoadingScene);
+        SceneManager.LoadScene(gameplaySceneName);
     }
 
     private IEnumerator TypeSentence(string sentence)
