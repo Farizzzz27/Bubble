@@ -302,6 +302,8 @@ MonoBehaviour:
   target: {fileID: 1638025986}
   player: {fileID: 1484614942}
   grappleSpeed: 5
+  normalGravity: 1
+  grappleGravity: 0
 --- !u!212 &1270292915
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -670,7 +672,8 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 1
   freezeDuration: 2
-  cooldown: 5
+  enemyTag: Enemy
+  range: 8
 --- !u!1 &1638025986
 GameObject:
   m_ObjectHideFlags: 0

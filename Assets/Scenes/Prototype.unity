@@ -639,8 +639,12 @@ MonoBehaviour:
   baseJumpForce: 5
   maxJumpForce: 8
   maxJumpTime: 0.5
+  dashSpeed: 15
+  dashDuration: 0.2
+  dashCooldown: 3
   freezeDuration: 2
-  cooldown: 5
+  enemyTag: Enemy
+  range: 8
 --- !u!114 &1253853693
 MonoBehaviour:
   m_ObjectHideFlags: 0

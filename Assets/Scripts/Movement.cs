@@ -29,15 +29,15 @@ public class Movement : MonoBehaviour
 
     public float freezeDuration = 2f;
     private bool isFreezing = false;
-    [SerializeField] private string enemyTag = "Enemy"; // Tag untuk mengenali musuh
-    [SerializeField] private float range = 8f;         // Jarak maksimal teleport
+    [SerializeField] private string enemyTag = "Enemy"; 
+    [SerializeField] private float range = 8f;        
 
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         body.gravityScale = 0;
         movementScript = GetComponent<Movement>();
-        animator = GetComponent<Animator>(); // Inisialisasi Animator
+        animator = GetComponent<Animator>(); 
     }
 
     private void Update()
