@@ -70155,6 +70155,47 @@ Transform:
   - {fileID: 1621404681}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1431594340 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2253911629886400664, guid: fd07d4153f578c844a1adaa645f1b392, type: 3}
+  m_PrefabInstance: {fileID: 1721142213}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &1431594343
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431594340}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.14410499}
+  m_Radius: 0.22842592
 --- !u!1 &1476772939
 GameObject:
   m_ObjectHideFlags: 0
@@ -70294,6 +70335,7 @@ GameObject:
   - component: {fileID: 1491548797}
   - component: {fileID: 1491548796}
   - component: {fileID: 1491548802}
+  - component: {fileID: 1491548803}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -70512,6 +70554,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 051b38d431a97e84aa67d2b068c53433, type: 2}
   - {fileID: 11400000, guid: 7f864a3f8dee1df468b7a0be0b4591d4, type: 2}
   - {fileID: 11400000, guid: bad619e0dea2bdd49b5e7330bc99fd30, type: 2}
+--- !u!114 &1491548803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491548795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e168489a9861f8f43a1df1ce0836ce77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimator: {fileID: 1491548796}
+  pickUpSwordAnimation: Interact
+  interactionKey: 106
 --- !u!1 &1516843349
 GameObject:
   m_ObjectHideFlags: 0
@@ -71569,6 +71626,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: H.Forbidden Weapon
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: fd07d4153f578c844a1adaa645f1b392, type: 3}
+      propertyPath: m_TagString
+      value: Sword
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: fd07d4153f578c844a1adaa645f1b392, type: 3}
       propertyPath: m_LocalScale.x
       value: 3.43
@@ -71628,7 +71689,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: fd07d4153f578c844a1adaa645f1b392, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1431594343}
   m_SourcePrefab: {fileID: -8435245712485981826, guid: fd07d4153f578c844a1adaa645f1b392, type: 3}
 --- !u!1 &1789850250
 GameObject:
