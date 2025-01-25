@@ -6,12 +6,16 @@ public class Dash : MonoBehaviour
     [SerializeField] private float dashSpeed = 15f; // Kecepatan dash
     [SerializeField] private float dashDuration = 0.2f; // Durasi dash
     [SerializeField] private float dashCooldown = 1f; // Waktu jeda antar dash
+    [SerializeField] private float dashDistance = 5f; // Jarak dash maksimum
+    [SerializeField] private float postDashStopTime = 0.5f; // Waktu berhenti setelah dash
 
     private Rigidbody2D body;
     private Movement movementScript;
     private bool isDashing = false;
     private bool canDash = true;
     private float dashTimeLeft;
+    private Vector2 dashStartPos; // Posisi awal saat mulai dash
+    private bool isPostDashStopping = false; // Menandakan apakah sedang berhenti setelah dash
 
     private void Awake()
     {
@@ -25,7 +29,7 @@ public class Dash : MonoBehaviour
         bool isMoving = Mathf.Abs(body.linearVelocity.x) > 0.01f;
 
         // Jika klik kanan ditekan, pemain bergerak, dan dash tersedia
-        if (Input.GetKey(KeyCode.Q) && canDash && isMoving && !isDashing)
+        if (Input.GetKey(KeyCode.Q) && canDash && isMoving && !isDashing && !isPostDashStopping)
         {
             StartDash();
         }
@@ -42,11 +46,11 @@ public class Dash : MonoBehaviour
         isDashing = true;
         canDash = false;
         dashTimeLeft = dashDuration;
+        dashStartPos = body.position; // Simpan posisi awal saat mulai dash
 
         // Mematikan gravitasi sementara saat dash
         body.gravityScale = 0;
         movementScript.enabled = false; // Nonaktifkan script Movement sementara
-        Invoke(nameof(EndDash), dashDuration);
         Invoke(nameof(ResetDash), dashCooldown);
     }
 
@@ -58,6 +62,13 @@ public class Dash : MonoBehaviour
             float dashDirection = Mathf.Sign(body.linearVelocity.x);
             body.linearVelocity = new Vector2(dashDirection * dashSpeed, 0);
             dashTimeLeft -= Time.deltaTime;
+
+            // Cek apakah dash sudah mencapai jarak tertentu
+            float distanceTraveled = Vector2.Distance(dashStartPos, body.position);
+            if (distanceTraveled >= dashDistance)
+            {
+                EndDash();
+            }
         }
     }
 
@@ -65,8 +76,21 @@ public class Dash : MonoBehaviour
     {
         isDashing = false;
         body.gravityScale = movementScript.gravity / Physics2D.gravity.y; // Pulihkan gravitasi
-        movementScript.enabled = true; // Aktifkan kembali script Movement
         body.linearVelocity = Vector2.zero; // Hentikan gerakan setelah dash
+        StartPostDashStop();
+    }
+
+    private void StartPostDashStop()
+    {
+        isPostDashStopping = true;
+        movementScript.enabled = false; // Tetap nonaktifkan Movement sementara
+        Invoke(nameof(EndPostDashStop), postDashStopTime);
+    }
+
+    private void EndPostDashStop()
+    {
+        isPostDashStopping = false;
+        movementScript.enabled = true; // Aktifkan kembali Movement setelah berhenti sejenak
     }
 
     private void ResetDash()
