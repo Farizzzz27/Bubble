@@ -71737,7 +71737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f705c7561494140a58ccd158bdddaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuSceneName: Mainmenu
+  mainMenuSceneName: Gameplay
 --- !u!1001 &1721142213
 PrefabInstance:
   m_ObjectHideFlags: 0
