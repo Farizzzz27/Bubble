@@ -5,14 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/PantaiCutscene.unity
     guid: b88e34804023eeb449144dc287dd6c72
   - enabled: 1
-    path: Assets/Scenes/Gameplay 1.unity
+    path: Assets/Scenes/Gameplay.unity
     guid: 5dee7f5b4d2bd654e88516920074596a
   - enabled: 1
     path: Assets/Scenes/Mainmenu.unity

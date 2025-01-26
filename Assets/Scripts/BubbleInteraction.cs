@@ -38,11 +38,13 @@ public class BubbleInteraction : MonoBehaviour
 
             if (cutsceneManager != null && currentBubbleIndex < bubbleDialogs.Length)
             {
+                bool isLastScene = currentBubbleIndex == bubbleDialogs.Length - 1; // Cek apakah ini adalah scene terakhir
                 cutsceneManager.StartDialog(bubbleDialogs[currentBubbleIndex], () =>
                 {
                     // Mengaktifkan kembali movement setelah dialog selesai
                     playerMovement.enabled = true;
-                });
+                }, isLastScene);
+
                 currentBubbleIndex++;
             }
         }

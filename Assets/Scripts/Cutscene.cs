@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Cutscene : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class Cutscene : MonoBehaviour
     private Coroutine currentCoroutine;
     private bool isDialogActive = false;
 
-     public static bool IsDialogActive { get; private set; } = false;
+    public static bool IsDialogActive { get; private set; } = false;
 
     private void Start()
     {
@@ -42,14 +43,14 @@ public class Cutscene : MonoBehaviour
         smallCharacterImage.gameObject.SetActive(false);
     }
 
-    public void StartDialog(StoryScene scene, System.Action onDialogEnd) // Menambahkan callback
+    public void StartDialog(StoryScene scene, System.Action onDialogEnd, bool isLastScene = false) // Tambahkan parameter isLastScene
     {
         if (isDialogActive) return;
 
-        StartCoroutine(PlayDialog(scene, onDialogEnd)); // Pass callback ke coroutine
+        StartCoroutine(PlayDialog(scene, onDialogEnd, isLastScene)); // Pass parameter ke coroutine
     }
 
-    private IEnumerator PlayDialog(StoryScene scene, System.Action onDialogEnd)
+    private IEnumerator PlayDialog(StoryScene scene, System.Action onDialogEnd, bool isLastScene)
     {
         dialogBox.SetActive(true);
         mainCharacterImage.gameObject.SetActive(true);
@@ -76,9 +77,15 @@ public class Cutscene : MonoBehaviour
         HideAllUI();
         isDialogActive = false;
         onDialogEnd?.Invoke();
+
+        if (isLastScene)
+        {
+            yield return new WaitForSeconds(1f); // Tunggu 1 detik
+            SceneManager.LoadScene("MainMenu"); // Ganti dengan nama scene MainMenu
+        }
     }
 
-        private IEnumerator TypeSentence(string sentence)
+    private IEnumerator TypeSentence(string sentence)
     {
         dialogText.text = "";
         foreach (char letter in sentence.ToCharArray())
@@ -113,12 +120,5 @@ public class Cutscene : MonoBehaviour
             sideCharacterImage.sprite = speaker.characterImage;
             sideCharacterImage.gameObject.SetActive(true); // Aktifkan gambar karakter sampingan
         }
-    }
-
-    private void HideAllCharacterImages()
-    {
-        mainCharacterImage.color = inactiveMainColor; // Gelapkan karakter utama
-        sideCharacterImage.gameObject.SetActive(false); // Sembunyikan karakter sampingan
-        smallCharacterImage.gameObject.SetActive(false); // Sembunyikan karakter kecil
     }
 }
