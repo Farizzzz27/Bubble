@@ -3629,6 +3629,8 @@ MonoBehaviour:
   smallCharacterImage: {fileID: 1217051098}
   storyScene: {fileID: 11400000, guid: 2b0e0579590eac3468ea49301089a048, type: 2}
   typingSpeed: 0.05
+  delayBeforeLoadingScene: 1
+  gameplaySceneName: Gameplay
   inactiveMainColor: {r: 0.54, g: 0.54, b: 0.54, a: 1}
 --- !u!1 &1217051096
 GameObject:
@@ -4788,7 +4790,7 @@ Transform:
   m_GameObject: {fileID: 1842990618}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.432, y: -3.049, z: 0}
+  m_LocalPosition: {x: -2.432, y: -2.251, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4829,7 +4831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {fileID: 804124061}
-  moveDuration: 3.3
+  moveDuration: 3
   waitTime: 8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
